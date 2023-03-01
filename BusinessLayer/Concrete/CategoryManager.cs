@@ -1,0 +1,44 @@
+﻿using BusinessLayer.Abstract;
+using DataAccesslayer.EntityFramework;
+using EntityLayer.Concrete;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BusinessLayer.Concrete
+{
+    public class CategoryManager : ICategoryService
+    {
+        EfCategoryRepository efCategoryRepository;  //
+        public CategoryManager()
+        {
+            efCategoryRepository = new EfCategoryRepository();
+        }
+        public void CategoryAdd(Category category)   //genericrepository içindeki değerlere ulasmalıyız
+        {
+            efCategoryRepository.Insert(category);
+        }
+
+        public void CategoryDelete(Category category)
+        {
+            efCategoryRepository.Delete(category);
+        }
+
+        public void CategoryUpdate(Category category)
+        {
+            efCategoryRepository.Update(category);
+        }
+
+        public Category GetById(int id)
+        {
+            return efCategoryRepository.GetByID(id);
+        }
+
+        public List<Category> Getlist()
+        {
+            return efCategoryRepository.GetListAll();
+        }
+    }
+}
