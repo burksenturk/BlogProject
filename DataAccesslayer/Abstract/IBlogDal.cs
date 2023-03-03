@@ -9,6 +9,6 @@ namespace DataAccesslayer.Abstract
 {
     public interface IBlogDal : IGenericDal<Blog>
     {
-
+        List<Blog> GetlistWithCategory();
     }
 }
