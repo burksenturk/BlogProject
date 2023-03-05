@@ -1,0 +1,36 @@
+﻿<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+
+<div class="tech-btm">
+	<h4>Mail Bülteni Abone Olun</h4>
+	<p>Teknoloji, yazılım ve diğer bloglar</p>
+	
+		<input id="mail1" type="email" placeholder="Email" required="" name="Mail">
+		<input id="btn1" type="submit" value="Abone Ol">
+	
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#btn1").click(function () {
+				$.ajax({
+					url: '@Url.Action("SubscribeMail","NewsLetter")',
+					type: 'POST',
+					dataType: 'json',
+					data: { Mail: $('#mail1').val() },
+					success: function (gelenveri) {
+						$("#btn1").removeAttr("disabled");
+						Swal.fire(
+							'Abonelik Oluşturuldu',
+							'kapatmak için butona basınız',
+							'success'
+						)
+					}
+				});
+			});
+		});
+	</script>
+
+</div>
+
+
+@*NOT BU KISMI AJAX İLE HALLETMEYE ÇALIŞ*@

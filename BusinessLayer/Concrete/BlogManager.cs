@@ -42,7 +42,7 @@ namespace BusinessLayer.Concrete
 		{
 			throw new NotImplementedException();
 		}
-		public List<Blog> GetBlogByID(int id)  //id ye göre blog getir  NOT: bu metodu Iblogservice den implemente etmedik
+		public List<Blog> GetBlogByID(int id)  //id ye göre blog getir  NOT: bu metodu Iblogservice den implemente etmedim
 		{
 			return _blogDal.GetListAll(x => x.BlogID == id);
 		}
@@ -51,5 +51,10 @@ namespace BusinessLayer.Concrete
 		{
 			return _blogDal.GetListAll();
 		}
-	}
+
+		public List<Blog> GetBloglistByWriter(int id)
+		{
+			return _blogDal.GetListAll(x => x.WriterID == id); 
+        }
+    }
 }

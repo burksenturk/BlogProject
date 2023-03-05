@@ -13,11 +13,11 @@ namespace BlogProjectUI.Controllers
 		WriterManager wm = new WriterManager(new EfWriterRepository());
 			
 		[HttpGet]
-		public IActionResult Index()   // ÖNEMLİ! EKLEME İŞLEMİ YAPILIRKEN HTTPGET VE HTTPPOST ATTİRUBUTELERİNİN TANIMLANDIGI METOTLARIN İSİMLERİ								AYNI OLMAK ZORUDNADIR
+		public IActionResult Index()   								
 		{
-			return View();              //[HttpGet] sayfa yüklenince [HttpPost] buton tetiklenince çalışır
-        }                               //[HttpGet] komutu sayfada kategorize veya benzeri işlemler kullanırken sayfa yüklendiği anda istenen									niteliklerde kullanılabilir
-        [HttpPost]						//örneğin sayfada il-ilçe seçtiricem kullanıcıya bu il-ilçeyi httpget in altında listelerim
+			return View();              
+        }                               
+        [HttpPost]						
 		public IActionResult Index(Writer p)  
 		{
 			WriterValidator wv = new WriterValidator();

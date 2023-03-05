@@ -17,9 +17,10 @@ namespace EntityLayer.Concrete
         public string BlogImage { get; set; }
         public DateTime BlogCreateDate { get; set; }
         public bool BlogStatus { get; set; }
-
         public int CategoryID { get; set; }
         public Category Category { get; set; } //ilişki içerisine alınacak olan tablo türünde yada entity türünde tanımlanması gerekiyor
+        public int WriterID { get; set; }
+        public Writer Writer { get; set; } //ilişki içerisine alınacak olan tablo türünde yada entity türünde tanımlanması gerekiyor
 
         public List<Comment> Comments { get; set; } // bir blogun birden fazla yorumu olabilir mantıgı
     }

@@ -20,12 +20,12 @@ namespace BusinessLayer.Concrete
 
 		public void CommentAdd(Comment comment)
 		{
-			throw new NotImplementedException();
+			_commentdal.Insert(comment);
 		}
 
-		public List<Comment> Getlist(int id)  //?? buna bi bak
+		public List<Comment> Getlist(int id)  
 		{
-			return _commentdal.GetListAll(x=>x.BlogID == id);
+			return _commentdal.GetListAll(x=>x.BlogID== id);
 		}
 
 	}

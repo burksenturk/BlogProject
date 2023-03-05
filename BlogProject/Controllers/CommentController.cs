@@ -1,6 +1,8 @@
 ﻿using BusinessLayer.Concrete;
 using DataAccesslayer.EntityFramework;
+using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace BlogProjectUI.Controllers
 {
@@ -12,10 +14,21 @@ namespace BlogProjectUI.Controllers
 		{
 			return View();
 		}
+		[HttpGet]
 		public PartialViewResult PartialAddComment()
 		{
 			return PartialView();
 		}
+        [HttpPost]
+        public bool PartialAddComment(Comment p)
+        {
+            p.CommentDate=DateTime.Parse(DateTime.Now.ToShortDateString());
+            p.CommentStatus = true;
+            p.BlogID = 8;
+            cm.CommentAdd(p);
+            return true;
+        }
+
         public PartialViewResult CommentListByBlog(int id)  //blogdaki yorum listesi
         {
 			var values = cm.Getlist(id);
