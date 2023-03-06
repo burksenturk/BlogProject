@@ -51,6 +51,10 @@ namespace BusinessLayer.Concrete
 		{
 			return _blogDal.GetListAll();
 		}
+		public List<Blog> Getlast3Blog() //footer içinde son 3 blog gönderisini listeleme metodu.. service de yazmadan managerde yazdık...
+		{
+			return _blogDal.GetListAll().Take(3).ToList();
+		}
 
 		public List<Blog> GetBloglistByWriter(int id)
 		{

@@ -12,7 +12,7 @@ namespace BusinessLayer.Abstract
         void BlogAdd(Blog blog);
         void BlogDelete(Blog blog);
         void BlogUpdate(Blog blog);
-        List<Blog> Getlist();
+        List<Blog> Getlist();  //listeleme işlemi gerçekleştirmek için 
         Blog GetById(int id);  //güncelleme işleminde kullanıcaz
         List<Blog> GetBlogListWithCategory();
         List<Blog> GetBloglistByWriter(int id);  //yazara göre bloglistesini getir
