@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Abstract
 {
-	public interface IBlogService : IGenericService<Blog>
-	{
-        List<Blog> GetBlogListWithCategory();
-        List<Blog> GetBloglistByWriter(int id);  //yazara göre bloglistesini getir
-
+    public interface IGenericService<T>
+    {
+        void TAdd(T t);
+        void TDelete(T t);
+        void TUpdate(T t);
+        List<T> Getlist();
+        T TGetById(int id);
     }
 }

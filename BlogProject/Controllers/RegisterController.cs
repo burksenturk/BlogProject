@@ -27,7 +27,7 @@ namespace BlogProjectUI.Controllers
                 //writerAbout ve status u controller tarafından gönderiyorum boş geçmemek adına
                 p.WriterStatus = true;
                 p.WriterAbout = "deneme test";
-                wm.WriterAdd(p);
+                wm.TAdd(p);
                 return RedirectToAction("Index", "Blog");
             }
 			else

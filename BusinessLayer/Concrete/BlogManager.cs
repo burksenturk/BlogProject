@@ -17,30 +17,17 @@ namespace BusinessLayer.Concrete
 		{
 			_blogDal = blogDal;
 		}
-
-		public void BlogAdd(Blog blog)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void BlogDelete(Blog blog)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void BlogUpdate(Blog blog)
-		{
-			throw new NotImplementedException();
-		}
-
 		public List<Blog> GetBlogListWithCategory()
 		{
 			return _blogDal.GetlistWithCategory();
 		}
-
-		public Blog GetById(int id)
+        public List<Blog> GetlistWithCategoryByWriteBm(int id)
+        {
+            return _blogDal.GetlistWithCategoryByWriter(id);
+        }
+        public Blog TGetById(int id)
 		{
-			throw new NotImplementedException();
+			return _blogDal.GetByID(id);   //silme işlemiiçin kullanmaya başladık
 		}
 		public List<Blog> GetBlogByID(int id)  //id ye göre blog getir  NOT: bu metodu Iblogservice den implemente etmedim
 		{
@@ -60,5 +47,20 @@ namespace BusinessLayer.Concrete
 		{
 			return _blogDal.GetListAll(x => x.WriterID == id); 
         }
-    }
+
+		public void TAdd(Blog t)
+		{
+			_blogDal.Insert(t);
+		}
+
+		public void TDelete(Blog t)
+		{
+			_blogDal.Delete(t);
+		}
+
+		public void TUpdate(Blog t)
+		{
+			_blogDal.Update(t);
+		}
+	}
 }
