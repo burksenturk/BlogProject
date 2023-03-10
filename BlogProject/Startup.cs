@@ -42,7 +42,7 @@ namespace BlogProject
                 CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(x =>
                 {
-                    x.LoginPath = "/Login/Index";  //return url yapacagýmýz sayfanýn dizinini verdik.
+                    x.LoginPath = "/Login/Index/";  //return url yapacagýmýz sayfanýn dizinini verdik.
                 });
         }
 
