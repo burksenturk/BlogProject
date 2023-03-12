@@ -1,6 +1,7 @@
 ﻿using BlogProjectUI.Models;
 using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules;
+using DataAccesslayer.Concrete;
 using DataAccesslayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
@@ -8,16 +9,20 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace BlogProjectUI.Controllers
 {
     
     public class WriterController : Controller
     {
+
         WriterManager vm = new WriterManager(new EfWriterRepository());
-        
+        [Authorize]
         public IActionResult Index()
         {
+            var usermail = User.Identity.Name;
+            ViewBag.v=usermail; 
             return View();
         }
         public IActionResult WriterProfile()
@@ -43,14 +48,16 @@ namespace BlogProjectUI.Controllers
         {
             return PartialView();
         }
-        [AllowAnonymous]
         [HttpGet]
         public IActionResult WriterEditProfile()
         {
-            var Writervalues = vm.TGetById(1);
-            return View(Writervalues);
+            //bu işlemler ile yazar id  sini static elle vermeden autantice  işlem ile çekmiş oluyoruz(id getirmek)
+            Context c = new Context();
+            var usermail = User.Identity.Name;  
+            var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
+            var writervalues = vm.TGetById(writerID);
+            return View(writervalues);
         }
-        [AllowAnonymous]
         [HttpPost]
         public IActionResult WriterEditProfile(Writer writer)
         {

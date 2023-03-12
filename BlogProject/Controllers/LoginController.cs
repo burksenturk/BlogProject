@@ -36,7 +36,7 @@ namespace BlogProjectUI.Controllers
                 ClaimsPrincipal principal = new ClaimsPrincipal(userİdentity);
                 await HttpContext.SignInAsync(principal);
 
-                return RedirectToAction("Index", "Writer");
+                return RedirectToAction("Index", "Dashboard"); //girince bu saydaya yönlendir
             }
             else
             {

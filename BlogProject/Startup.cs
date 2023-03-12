@@ -42,7 +42,7 @@ namespace BlogProject
                 CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(x =>
                 {
-                    x.LoginPath = "/Login/Index/";  //return url yapacagýmýz sayfanýn dizinini verdik.
+                    x.LoginPath = "/Login/Index";  //return url yapacagýmýz sayfanýn dizinini verdik.
                 });
         }
 
@@ -69,11 +69,17 @@ namespace BlogProject
 
             app.UseAuthorization();
 
+            //uygulama ayaða kaldýrýldýðý zaman ilk çalýsacak kýsýmdýr burasý.(canlýya aldýgýmýzda falan..)
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                 endpoints.MapControllerRoute(  //areas açýnca bunu buraya yapýstýrdýk(scafoldingreadme içinden alýp).
+                 name: "areas",
+                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+             );
+
+                 endpoints.MapControllerRoute(
+                 name: "default",
+                 pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
