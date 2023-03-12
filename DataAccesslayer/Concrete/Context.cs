@@ -8,13 +8,29 @@ using System.Threading.Tasks;
 
 namespace DataAccesslayer.Concrete
 {
-    public class Context : DbContext //bağlantı adresimizi tanımlıcaz yani connectionstring
+    public class Context : DbContext // connectionstring
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) // bu metodun içerisinde biz connectionstringimizi tanımlıcaz
         {
             optionsBuilder.UseSqlServer("server=DESKTOP-61LIS6H;database=BlogProjectDb;integrated security = true");
         }
-        public DbSet<About> Abouts { get; set; }  // contextlerimizi yazıyoruz
+        //notlarla maç örneği var ona bak HomeMatches>WriteSender,AwayMatches>WriteReceiver | HomeTeam>SenderUser,GuestTeam>xReceiveruser
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Message2>()  //Gönderici
+                .HasOne(x => x.SenderUser)
+                .WithMany(y => y.WriteSender)
+                .HasForeignKey(z => z.SenderID)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            modelBuilder.Entity<Message2>()  //Alıcı
+                .HasOne(x => x.ReceiverUser)
+                .WithMany(y => y.WriteReceiver)
+                .HasForeignKey(z => z.ReceiverID)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        }
+
+        public DbSet<About> Abouts { get; set; }  
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -23,6 +39,8 @@ namespace DataAccesslayer.Concrete
         public DbSet<NewsLetter> Newsletters { get; set; }
         public DbSet<BlogRayting> BlogRaytings { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Message2> Messages2s { get; set; }
 
 
     }

@@ -18,5 +18,7 @@ namespace EntityLayer.Concrete
         public string WiterPassword { get; set; }
         public bool WriterStatus { get; set; }
         public List<Blog> Blogs { get; set; }
+        public virtual ICollection<Message2> WriteSender { get; set; }     //MessageSender  Bu iki prop bize aslında mesajları gösteriyor
+        public virtual ICollection<Message2> WriteReceiver { get; set; }   //MessageReceiver  Alternatif NOT! HasOne da Writer olmasi gerek cunki bir yazar birden cok mesaj gonderebilir, WithMany se mesajlarla bagli. 
     }
 }
