@@ -1,0 +1,23 @@
+﻿<script src="~/js/site.js"></script>
+@{
+    ViewData["Title"] = "BlogListExcel";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h1>BlogListExcel</h1>
+<br />
+<a href="/Admin/Blog/ExportSaticExcelBloglist" class="btn btn-primary">Excel Listesini İndir</a>
+
+
+
+
+
+@*BUTTON OLARAK DENE*@
+@*<button class="tbn btn-primary" onclick="DonwloadExcelBlogList">Excel Listesini İndir</button>
+
+<script>
+    function DonwloadExcelBlogList() {
+        wind.open("/Admin/Blog/ExportSaticExcelBloglist");
+    }
+</script>
+*@

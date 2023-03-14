@@ -1,11 +1,52 @@
-﻿@using EntityLayer.Concrete
-@model List<Category>
+﻿@*sayfalama işlemi için*@
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model PagedList<EntityLayer.Concrete.Category>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
 
-<h1>Index</h1>
-<br/>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
 
-<h2>area kısmına geçtik</h2>
+<h1>Kategori Listesi</h1>
+<br />
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Kategori Adı</th>
+        <th>Pasif Yap</th>
+        <th>Aktif Yap</th>
+        <th>#Düzenle</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.CategoryID</td>
+            <td>@item.CategoryName</td>
+            <td><a href="/Admin/Category/CategoryDelete/@item.CategoryID" id="btn1" onclick="return confirm('Silmek istediğinizden emin misiniz?')" class="btn btn-danger">Pasif Yap</a></td>
+            <td><a href="/Admin/Category/CategoryDelete/@item.CategoryID" class="btn btn-success">Aktif Yap</a></td>
+            <td><a href="#" class="btn btn-info">Düzenle</a></td>
+        </tr>
+    }
+</table>
+<a href="/Admin/Category/AddCategory" class="btn btn-primary">Yeni Kategori </a>
+<br />
+<br />
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index" , new{page}))
+
+
+
+@*SWEET ALERT KULLANARAK SİLME İŞLEMİNİ YAP*@
+@*<td><button id="btn1" class="btn btn-danger" data-id="@item.CategoryID">SİL</button></td>
+<script>
+    $(document).ready(function () {
+    $("#btn1").click(function () {
+        var id= $(this).data('id')
+</script>*@
+
+
+
