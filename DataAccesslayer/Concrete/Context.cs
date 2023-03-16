@@ -1,4 +1,5 @@
 ﻿using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccesslayer.Concrete
 {
-    public class Context : DbContext // connectionstring
+    public class Context : IdentityDbContext<AppUser, AppRole, int>
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) // bu metodun içerisinde biz connectionstringimizi tanımlıcaz
         {
@@ -28,6 +29,8 @@ namespace DataAccesslayer.Concrete
                 .WithMany(y => y.WriteReceiver)
                 .HasForeignKey(z => z.ReceiverID)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            base.OnModelCreating(modelBuilder); //identity migration u hata vermesin diye yazdık tekrar
         }
 
         public DbSet<About> Abouts { get; set; }  

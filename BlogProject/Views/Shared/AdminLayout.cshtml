@@ -182,7 +182,6 @@
     </div>
 
 
-
     <!-- Mainly scripts -->
     <script src="~/inspinia-gh-pages/js/jquery-3.1.1.min.js"></script>
     <script src="~/inspinia-gh-pages/js/popper.min.js"></script>
@@ -203,6 +202,7 @@
     <!-- Peity -->
     <script src="~/inspinia-gh-pages/js/demo/peity-demo.js"></script>
 
+
     <script>
         $(document).ready(function(){
             $('.i-checks').iCheck({
@@ -211,7 +211,7 @@
             });
         });
     </script>
-
+    @await RenderSectionAsync("scripts",false)
 </body>
 
 </html>
