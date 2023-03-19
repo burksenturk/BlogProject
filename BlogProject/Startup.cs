@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +15,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlogProject
+
+namespace BlogProjectUI
 {
     public class Startup
     {
@@ -29,25 +31,41 @@ namespace BlogProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<Context>();
-            services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
+            services.AddIdentity<AppUser, AppRole>(x => {
+                x.Password.RequireUppercase = false;
+                x.Password.RequireNonAlphanumeric = false;
+            })
+                .AddEntityFrameworkStores<Context>();
+
             services.AddControllersWithViews();
-            //bu metod ile proje seviyesinde  Authorize iþlemi kullanabilicez
+
+            services.AddSession();
+
             services.AddMvc(config =>
             {
-                //policy newleyip authantice iþlemini zorunlu kýlan bir metod yazýcaz
-                var policy=new AuthorizationPolicyBuilder()
-                                .RequireAuthenticatedUser() //kullanýcý otantike olmasý 
-                                .Build();
+                var policy = new AuthorizationPolicyBuilder()
+                            .RequireAuthenticatedUser()
+                            .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             });
-
             services.AddMvc();
             services.AddAuthentication(
                 CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(x =>
                 {
-                    x.LoginPath = "/Login/Index";  //return url yapacagýmýz sayfanýn dizinini verdik.
-                });
+                    x.LoginPath = "/Login/Index";
+                }
+                );
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(100);
+                options.AccessDeniedPath = new PathString("/Login/AccessDenied/");
+                options.LoginPath = "/Login/Index/";
+                options.SlidingExpiration = true;
+
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,27 +81,29 @@ namespace BlogProject
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1", "?code={0}");  //code={0} hata kodu için almasý gereken kod deðeridir
+
+            app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1", "?code={0}");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseAuthentication();
 
+            app.UseSession();
+
             app.UseRouting();
 
             app.UseAuthorization();
 
-            //uygulama ayaða kaldýrýldýðý zaman ilk çalýsacak kýsýmdýr burasý.(canlýya aldýgýmýzda falan..)
             app.UseEndpoints(endpoints =>
             {
-                 endpoints.MapControllerRoute(  //areas açýnca bunu buraya yapýstýrdýk(scafoldingreadme içinden alýp).
-                 name: "areas",
-                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-             );
-
-                 endpoints.MapControllerRoute(
-                 name: "default",
-                 pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+              );
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

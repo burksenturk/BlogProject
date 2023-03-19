@@ -6,18 +6,26 @@ using DataAccesslayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BlogProjectUI.Controllers
 {
     
     public class WriterController : Controller
     {
-
+        private readonly UserManager<AppUser> _userManager;
         WriterManager vm = new WriterManager(new EfWriterRepository());
+
+        public WriterController(UserManager<AppUser> userManager)
+        {
+            _userManager = userManager;
+        }
+
         [Authorize]
         public IActionResult Index()
         {
@@ -49,44 +57,29 @@ namespace BlogProjectUI.Controllers
             return PartialView();
         }
         [HttpGet]
-        public IActionResult WriterEditProfile()
+        public  async Task<IActionResult>   WriterEditProfile()  //mimariden kurtarıp tamamen Identity e tasıdık
         {
-            //bu işlemler ile yazar id  sini static elle vermeden autantice  işlem ile çekmiş oluyoruz(id getirmek)
-            Context c = new Context();
-            var usermail = User.Identity.Name;  
-            var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
-            var writervalues = vm.TGetById(writerID);
-            return View(writervalues);
+            var values = await _userManager.FindByNameAsync(User.Identity.Name);        //Name=Useername   ismi yakalıyor
+            UserupdateViewModel model = new UserupdateViewModel();
+            model.mail = values.Email;
+            model.namesurname = values.NameSurname;
+            model.imageurl = values.ImageUrl;
+            model.username = values.UserName;
+            return View(model);
         }
         [HttpPost]
-        public IActionResult WriterEditProfile(Writer writer)
+        public async Task<IActionResult>  WriterEditProfile(UserupdateViewModel model)
         {
-            var pas1 = Request.Form["pass1"];
-            var pas2 = Request.Form["pass2"]; //şifreyi iki defa sorma işlemi 72.kısım
-            if (pas1 == pas2)
-            {
-                writer.WiterPassword = pas2;
-                WriterValidator validationRules = new WriterValidator();
-                ValidationResult result = validationRules.Validate(writer);
-                if (result.IsValid)
-                {
-                    vm.TUpdate(writer);
-                    return RedirectToAction("Index", "Dashboard");
-                }
-                else
-                {
-                    foreach (var item in result.Errors)
-                    {
-                        ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-                    }
-                }
-            }
-            else
-            {
-                ViewBag.hata = "Girdiğiniz Parolalar Uyuşmuyor!";
-            }
-            return View();
+            var values = await _userManager.FindByNameAsync(User.Identity.Name);
+            values.Email = model.mail;
+            values.NameSurname = model.namesurname;
+            values.ImageUrl = model.imageurl;
+            values.UserName = model.username;
+            values.PasswordHash = _userManager.PasswordHasher.HashPassword(values,model.password);
+            var result = await _userManager.UpdateAsync(values);  //identity kullaranak onun metotları ile güncelleme işlemi yapar
+            return RedirectToAction("Index", "Dashboard");
         }
+
         [AllowAnonymous]
         [HttpGet]
         public IActionResult WriterAdd() // foto ekleme ve admin tarafında kullancaz
@@ -114,7 +107,7 @@ namespace BlogProjectUI.Controllers
             w.WriterAbout = p.WriterAbout;
             vm.TAdd(w);
             return RedirectToAction("Index", "Dashboard");
-
         }
+
     }
 }

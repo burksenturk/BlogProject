@@ -10,7 +10,7 @@ namespace BlogProjectUI.Controllers
     [AllowAnonymous]
     public class RegisterUserController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;  //mimariden bağımsız constructure metotlarımı burada kullandım. istesem dahil ederim. kayıt işlemi                                                     yazar üzerinden oalacak
+        private readonly UserManager<AppUser> _userManager;  //mimariden bağımsız constructure metotlarımı burada kullandım. istesem dahil ederim. kayıt işlemi                                                     yazar üzerinden oalacak(Identity ile)
         public RegisterUserController(UserManager<AppUser> userManager)
         {
             _userManager = userManager;

@@ -4,32 +4,29 @@
 
 <div class="tech-btm">
 	<p>Teknoloji, yazılım ve diğer bloglar</p>
-	
 		<input id="mail1" type="email" placeholder="Email" required="" name="Mail">
 		<input id="btn1" type="submit" value="Abone Ol">
-	
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$("#btn1").click(function () {
-				$.ajax({
-					url: '@Url.Action("SubscribeMail","NewsLetter")',
-					type: 'POST',
-					dataType: 'json',
-					data: { Mail: $('#mail1').val() },
-					success: function (gelenveri) {
-						$("#btn1").removeAttr("disabled");
-						Swal.fire(
-							'Abonelik Oluşturuldu',
-							'kapatmak için butona basınız',
-							'success'
-						)
-					}
-				});
+</div>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#btn1").click(function () {
+			$.ajax({
+				url: '@Url.Action("SubscribeMail","NewsLetter")',
+				type: 'POST',
+				dataType: 'json',
+				data: { Mail: $('#mail1').val() },
+				success: function (gelenveri) {
+					$("#btn1").removeAttr("disabled");
+					Swal.fire(
+						'Abonelik Oluşturuldu',
+						'kapatmak için butona basınız',
+						'success'
+					)
+				}
 			});
 		});
-	</script>
+	});
+</script>
 
-</div>
 
-
-@*NOT BU KISMI AJAX İLE HALLETMEYE ÇALIŞ*@
+@*NOT BU KISMI AJAX İLE 2 kez kayıt atıyor neden HALLETMEYE ÇALIŞ*@
