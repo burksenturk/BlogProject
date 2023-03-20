@@ -60,7 +60,7 @@ namespace BlogProjectUI
             {
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(100);
-                options.AccessDeniedPath = new PathString("/Login/AccessDenied/");
+                options.AccessDeniedPath = new PathString("/Login/AccessDenied/");//yetkisiz giriþlrde yönledririlecek yer. controllerda Authorize=admin olunca
                 options.LoginPath = "/Login/Index/";
                 options.SlidingExpiration = true;
 

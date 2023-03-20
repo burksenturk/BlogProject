@@ -1,20 +1,26 @@
-﻿using BlogProjectUI.Models;
+﻿using BlogProjectUI.Areas.Admin.Models;
+using BlogProjectUI.Models;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlogProjectUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles ="Admin")]
     public class AdminRoleController : Controller
     {
         private readonly RoleManager<AppRole> _roleManager;
+        private readonly  UserManager<AppUser> _userManager;
 
-        public AdminRoleController(RoleManager<AppRole> roleManager)
+        public AdminRoleController(RoleManager<AppRole> roleManager, UserManager<AppUser> userManager)
         {
             _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -56,7 +62,7 @@ namespace BlogProjectUI.Areas.Admin.Controllers
             RoleUpdateViewModel model = new RoleUpdateViewModel
             {
                 Id = values.Id,
-                name = values.Name,
+                name = values.Name
             };
             return View(model);
         }
@@ -84,6 +90,49 @@ namespace BlogProjectUI.Areas.Admin.Controllers
             }
             return View();
         }
+        public IActionResult UserRoleList()
+        {
+            var values = _userManager.Users.ToList();
+            return View(values);
+        }
+        [HttpGet]
+        public async Task<IActionResult> AssignRole(int id)
+        {
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+            var roles = _roleManager.Roles.ToList();
 
+            TempData["UserId"]=user.Id;
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+            List<RoleAssignViewModel> model = new List<RoleAssignViewModel>();
+            foreach (var item in roles)
+            {
+                RoleAssignViewModel m = new RoleAssignViewModel();
+                m.RoleID = item.Id;
+                m.Name = item.Name;
+                m.Exists = userRoles.Contains(item.Name);
+                model.Add(m);
+            }
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AssignRole(List<RoleAssignViewModel> model)
+        {
+            var userid = (int)TempData["UserId"];  //userid sistemem autantice olan kullanıcının id değerini  tutmus oluyor
+            var user = _userManager.Users.FirstOrDefault(x=>x.Id == userid);
+            foreach (var item in model)
+            {
+                if(item.Exists)
+                {
+                    await _userManager.AddToRoleAsync(user, item.Name);  //seçili olan değerleri rolüne ekle checkbox da
+                }
+                else
+                {
+                    await _userManager.RemoveFromRoleAsync(user, item.Name); //seçili olan değerleri rolünü kaldır checkbox da
+                }
+            }
+            return RedirectToAction("UserRoleList");
+        }
     }
 }
