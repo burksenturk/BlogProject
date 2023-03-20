@@ -4,8 +4,8 @@
             <a href="#" class="nav-link">
                 <div class="nav-profile-image">
                     <img src="~/writerimagefile/profilbrk.jpeg" alt="profile" />
-@*                    <img src="~/wwwroot/WriterImageFile/" >
-*@                    <span class="login-status online"></span>
+                    @*                    <img src="~/wwwroot/WriterImageFile/" >
+                    *@                    <span class="login-status online"></span>
                     <!--change to offline or busy as needed-->
                 </div>
                 <div class="nav-profile-text d-flex flex-column">
@@ -40,9 +40,15 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/Writer/WriterMessage/">
-                <span class="menu-title">Mesajlar</span>
+            <a class="nav-link" href="/Message/Inbox/">
+                <span class="menu-title">Gelen Mesajlar</span>
                 <i class="mdi mdi-message menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/Message/SendBox/">
+                <span class="menu-title">Giden Mesajlar</span>
+                <i class="mdi mdi-message-plus menu-icon"></i>
             </a>
         </li>
         <li class="nav-item">

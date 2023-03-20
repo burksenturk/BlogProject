@@ -9,7 +9,7 @@
 <br />
 @using (Html.BeginForm("AddCategory", "Category", FormMethod.Post)) @*bunu yapınca textboxfor kullandık*@
 {
-    @Html.Label("Blog Adı")
+    @Html.Label("Kategori Adı")
     @Html.TextBoxFor(x=>x.CategoryName,new {@class="form-control"})
     @Html.ValidationMessageFor(x=>x.CategoryName,"", new {@class="text-danger"})
     <br />
